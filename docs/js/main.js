@@ -4,12 +4,12 @@ window.addEventListener('DOMContentLoaded', async (event) => {
 
     async function apps() {
         const domain = 'pawoo.net';
-        const redirect_url = location.href
+        const redirect_uri = location.href
         const obj = {
-            client_name: `Test Application by API redirect_uris=${redirect_url}`,
-            redirect_uris: `${redirect_url}`,
+            client_name: `Test Application by API redirect_uris=${redirect_uri}`,
+            redirect_uris: `${redirect_uri}`,
             scopes: 'read write follow push',
-            website: `${redirect_url}`,
+            website: `${redirect_uri}`,
         };
         const method = "POST";
         const body = JSON.stringify(obj);
@@ -27,14 +27,14 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     function authorize(client_id) {
         console.log('----- authorize -----')
         const scope='read+write+follow+push'
-        const redirect_url = location.href
+        const redirect_uri = location.href
         const url = `https://pawoo.net/oauth/authorize?client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&response_type=code`
         console.log(url)
         //window.location.href = url
     }
     async function token(client_id, client_secret, code) {
         const domain = 'pawoo.net';
-        const redirect_url = location.href
+        const redirect_uri = location.href
         const obj = {
             grant_type: 'client_credentials',
             client_id: client_id,
