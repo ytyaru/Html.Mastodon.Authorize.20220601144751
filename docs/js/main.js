@@ -11,6 +11,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         };
         const HEADERS = (headers) ? {...defHeaders, headers} : defHeaders
         console.log(HEADERS)
+        console.log(params)
         console.log(body)
         const res = await fetch(`https://${DOMAIN}/${api}`, {method, HEADERS, body}).catch((e)=>console.error(e));
         console.log(res)
@@ -27,7 +28,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
             scopes: 'read write follow push',
             website: 'https://ytyaru.github.io/',
         };
-        return await post('pawoo.net', 'api/v1/apps', {}, params)
+        return await post('pawoo.net', 'api/v1/apps', null, params)
     }
     function authorize(client_id) {
         console.log('----- authorize -----')
@@ -46,7 +47,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
             redirect_uri: 'https://ytyaru.github.io/',
             code: code,
         };
-        return await post('pawoo.net', 'oauth/token', {}, params)
+        return await post('pawoo.net', 'oauth/token', null, params)
     }
     async function toot(token) {
         console.log('----- toot -----')
