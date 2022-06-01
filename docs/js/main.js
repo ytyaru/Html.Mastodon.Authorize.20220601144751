@@ -1,5 +1,29 @@
 window.addEventListener('DOMContentLoaded', async (event) => {
     console.log('DOMContentLoaded!!');
+
+
+    const domain = 'pawoo.net';
+    const obj = {
+        client_name: 'Test Application by API redirect_uris=https://ytyaru.github.io/',
+        redirect_uris: 'https://ytyaru.github.io/',
+        scopes: 'read write follow push',
+        website: 'https://ytyaru.github.io/',
+    };
+    const method = "POST";
+    const body = JSON.stringify(obj);
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
+    const res = await fetch(`https://${domain}/api/v1/apps`, {method, headers, body}).catch((e)=>console.error(e));
+    const json = await res.json()
+    console.log(json)
+    console.log(JSON.stringify(json))
+
+
+
+
+
     async function post(domain='pawoo.net', api='api/v1/apps', headers=null, params=null) {
         const method = "POST";
         const DOMAIN = domain || 'pawoo.net';
@@ -22,29 +46,31 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     }
     async function apps() {
         console.log('----- apps -----')
+        const redirect_url = location.href
         const params = {
-            client_name: 'Test Application by API redirect_uris=https://ytyaru.github.io/',
-            redirect_uris: 'https://ytyaru.github.io/',
+            client_name: `Test Application by API redirect_uris=${redirect_url}`,
+            redirect_uris: `${redirect_url}`,
             scopes: 'read write follow push',
-            website: 'https://ytyaru.github.io/',
+            website: `${redirect_url}`,
         };
         return await post('pawoo.net', 'api/v1/apps', null, params)
     }
     function authorize(client_id) {
         console.log('----- authorize -----')
         const scope='read+write+follow+push'
-        const redirect_uri = 'https://ytyaru.github.io/'
+        const redirect_url = location.href
         const url = `https://pawoo.net/oauth/authorize?client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&response_type=code`
         console.log(url)
         //window.location.href = url
     }
     async function token(client_id, client_secret, code) {
         console.log('----- token -----')
+        const redirect_url = location.href
         const params = {
             grant_type: 'client_credentials',
             client_id: client_id,
             client_secret: client_secret,
-            redirect_uri: 'https://ytyaru.github.io/',
+            redirect_uri: `${redirect_url}`,
             code: code,
         };
         return await post('pawoo.net', 'oauth/token', null, params)
