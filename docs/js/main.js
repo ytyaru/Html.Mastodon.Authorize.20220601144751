@@ -213,6 +213,12 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         console.log(v)
         const res = await toot(accessToken)
         console.log(res)
+
+        // 認証コード(code)をURLパラメータから削除する
+        var url = new URL(window.location.href);
+        var params = url.searchParams;
+        params.delete('code');
+        history.replaceState('', '', url.pathname);
         console.log('----- 以上 -----')
     }
 });
