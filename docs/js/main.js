@@ -198,10 +198,10 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         // client_id, client_secretはLocalStorageに保存しておく必要がある
         const json = await token(localStorage.getItem('client_id'), localStorage.getItem('client_secret'), url.searchParams.get('code'))
         console.log(json)
-        const accesssToken = json.access_token
+        const accessToken = json.access_token
         const v = await verify(accessToken)
         console.log(v)
-        const res = await toot(accesssToken)
+        const res = await toot(accessToken)
         console.log(res)
         console.log('----- 以上 -----')
     }
