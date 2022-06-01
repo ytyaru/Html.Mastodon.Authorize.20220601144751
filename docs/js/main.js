@@ -51,6 +51,10 @@ window.addEventListener('DOMContentLoaded', async (event) => {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         };
+        console.log(method)
+        console.log(headers)
+        console.log(obj)
+        console.log(body)
         const res = await fetch(`https://${domain}/oauth/token`, {method, headers, body}).catch((e)=>console.error(e));
         console.log(res)
         const json = await res.json()
@@ -199,7 +203,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         console.log('----- authorized -----')
         console.log('client_id:', localStorage.getItem('client_id'))
         console.log('client_secret:', localStorage.getItem('client_secret'))
-        console.log('認証コード', url.searchParams.has('code'))
+        console.log('認証コード', url.searchParams.get('code'))
         // client_id, client_secretはLocalStorageに保存しておく必要がある
         const json = await token(localStorage.getItem('client_id'), localStorage.getItem('client_secret'), url.searchParams.get('code'))
         console.log(json)
