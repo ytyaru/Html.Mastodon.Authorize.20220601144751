@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         const redirect_uri = location.href
         const url = `https://pawoo.net/oauth/authorize?client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&response_type=code`
         console.log(url)
-        //window.location.href = url
+        window.location.href = url
     }
     async function token(client_id, client_secret, code) {
         const domain = 'pawoo.net';
@@ -158,6 +158,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         localStorage.setItem('client_secret', app.client_secret);
         console.log(app)
         console.log(app.client_id)
+        console.log(app.client_secret)
         const auth = authorize(app.client_id)
     }
 });
