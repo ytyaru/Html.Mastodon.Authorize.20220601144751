@@ -76,18 +76,12 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         console.log(res)
         const json = await res.json()
         console.log(json)
-        //return json
-        switch (res.status) {
-            case 200: return true
-            case 401: return false
-            default: return false
-        }
-
+        return json
     }
     async function toot(accessToken) {
         console.log('----- toot -----')
         const domain = 'pawoo.net';
-        const status = document.getElementById('status').value
+        const status = document.getElementById('message').value
         console.log('status:', status)
         const obj = {status: status};
         //const obj = {status: "マストドンAPIのテストです。\nJavaScriptとユーザの手動により認証しました。"};
@@ -112,30 +106,19 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     const url = new URL(location.href)
     if (!url.searchParams.has('code')) { // マストドンAPI oauth/authorize でリダイレクトされた場合
         document.getElementById('toot').addEventListener('click', async(event) => {
-            const access_token = localStorage.getItem('access_token')
-            if (access_token && verify(access_token)) {
-                console.log('既存のトークンが有効なため即座にトゥートします。');
-                const res = await toot(access_token)
-                console.log(res)
-                document.getElementById('res').value = JSON.stringify(res)
-            } else {
-                console.log('既存のトークンがないか無効のため、新しいアクセストークンを発行します。');
-                const app = await apps()
-                localStorage.setItem('client_id', app.client_id);
-                localStorage.setItem('client_secret', app.client_secret);
-                localStorage.setItem('status', document.getElementById('status').value);
-                console.log(app)
-                console.log(app.client_id)
-                console.log(app.client_secret)
-                console.log(localStorage.getItem('client_id'))
-                console.log(localStorage.getItem('client_secret'))
-                authorize(app.client_id)
-            }
+            console.log('トゥートボタンを押しました');
+            const app = await apps()
+            localStorage.setItem('client_id', app.client_id);
+            localStorage.setItem('client_secret', app.client_secret);
+            console.log(app)
+            console.log(app.client_id)
+            console.log(app.client_secret)
+            console.log(localStorage.getItem('client_id'))
+            console.log(localStorage.getItem('client_secret'))
+            authorize(app.client_id)
         });
     }
     else {
-        const status = localStorage.getItem('status')
-        if (status) { document.getElementById('status').value = status; }
         console.log('----- authorized -----')
         console.log('client_id:', localStorage.getItem('client_id'))
         console.log('client_secret:', localStorage.getItem('client_secret'))
@@ -144,14 +127,11 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         const json = await token(localStorage.getItem('client_id'), localStorage.getItem('client_secret'), url.searchParams.get('code'))
         console.log(json)
         console.log('access_token:', json.access_token)
-        localStorage.setItem('access_token', json.access_token);
         const accessToken = json.access_token
         const v = await verify(accessToken)
         console.log(v)
         const res = await toot(accessToken)
         console.log(res)
-        document.getElementById('res').value = JSON.stringify(res)
-        localStorage.removeItem('status')
 
         // 認証コード(code)をURLパラメータから削除する
         const params = url.searchParams;
