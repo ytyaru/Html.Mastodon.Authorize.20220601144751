@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     async function token(client_id, client_secret, code) {
         console.log('----- token -----')
         const domain = 'pawoo.net';
-        const redirect_uri = location.href
+        const redirect_uri = location.href.split('?')[0]
         const obj = {
             //grant_type: 'client_credentials',
             grant_type: 'authorization_code',
