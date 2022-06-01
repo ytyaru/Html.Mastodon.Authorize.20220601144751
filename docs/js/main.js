@@ -2,28 +2,81 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     console.log('DOMContentLoaded!!');
 
 
-    const domain = 'pawoo.net';
-    const obj = {
-        client_name: 'Test Application by API redirect_uris=https://ytyaru.github.io/',
-        redirect_uris: 'https://ytyaru.github.io/',
-        scopes: 'read write follow push',
-        website: 'https://ytyaru.github.io/',
-    };
-    const method = "POST";
-    const body = JSON.stringify(obj);
-    const headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    };
-    const res = await fetch(`https://${domain}/api/v1/apps`, {method, headers, body}).catch((e)=>console.error(e));
-    const json = await res.json()
-    console.log(json)
-    console.log(JSON.stringify(json))
+    async function apps() {
+        const domain = 'pawoo.net';
+        const redirect_url = location.href
+        const obj = {
+            client_name: `Test Application by API redirect_uris=${redirect_url}`,
+            redirect_uris: `${redirect_url}`,
+            scopes: 'read write follow push',
+            website: `${redirect_url}`,
+        };
+        const method = "POST";
+        const body = JSON.stringify(obj);
+        const headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        };
+        const res = await fetch(`https://${domain}/api/v1/apps`, {method, headers, body}).catch((e)=>console.error(e));
+        console.log(res)
+        const json = await res.json()
+        console.log(json)
+        console.log(JSON.stringify(json))
+    }
+    function authorize(client_id) {
+        console.log('----- authorize -----')
+        const scope='read+write+follow+push'
+        const redirect_url = location.href
+        const url = `https://pawoo.net/oauth/authorize?client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&response_type=code`
+        console.log(url)
+        //window.location.href = url
+    }
+    async function token(client_id, client_secret, code) {
+        const domain = 'pawoo.net';
+        const redirect_url = location.href
+        const obj = {
+            grant_type: 'client_credentials',
+            client_id: client_id,
+            client_secret: client_secret,
+            redirect_uri: redirect_uri,
+            code: code,
+        };
+        const method = "POST";
+        const body = JSON.stringify(obj);
+        const headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        };
+        const res = await fetch(`https://${domain}/oauth/token`, {method, headers, body}).catch((e)=>console.error(e));
+        console.log(res)
+        const json = await res.json()
+        console.log(json)
+    }
+    /*
+    async function apps() {
+        const domain = 'pawoo.net';
+        const obj = {
+            client_name: 'Test Application by API redirect_uris=https://ytyaru.github.io/',
+            redirect_uris: 'https://ytyaru.github.io/',
+            scopes: 'read write follow push',
+            website: 'https://ytyaru.github.io/',
+        };
+        const method = "POST";
+        const body = JSON.stringify(obj);
+        const headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        };
+        const res = await fetch(`https://${domain}/api/v1/apps`, {method, headers, body}).catch((e)=>console.error(e));
+        const json = await res.json()
+        console.log(json)
+        console.log(JSON.stringify(json))
+    }
+    */
 
 
 
-
-
+    /*
     async function post(domain='pawoo.net', api='api/v1/apps', headers=null, params=null) {
         const method = "POST";
         const DOMAIN = domain || 'pawoo.net';
@@ -34,10 +87,11 @@ window.addEventListener('DOMContentLoaded', async (event) => {
           'Content-Type': 'application/json',
         };
         const HEADERS = (headers) ? {...defHeaders, headers} : defHeaders
+        const url = `https://${DOMAIN}/${api}`
         console.log(HEADERS)
         console.log(params)
         console.log(body)
-        const res = await fetch(`https://${DOMAIN}/${api}`, {method, HEADERS, body}).catch((e)=>console.error(e));
+        const res = await fetch(url, {method, HEADERS, body}).catch((e)=>console.error(e));
         console.log(res)
         const json = await res.json()
         console.log(json)
@@ -83,6 +137,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         const params = {status: "マストドンAPIのテストです。\nJavaScriptで認証ページへ遷移しユーザにログインで認証手続きをさせ、tokenを取得してtootするテストです。"};
         return await post('pawoo.net', 'api/v1/statuses', header, params)
     }
+    */
     const url = new URL(location.href)
     if (url.searchParams.has('code')) { // マストドンAPI oauth/authorize でリダイレクトされた場合
         console.log('----- authorized -----')
