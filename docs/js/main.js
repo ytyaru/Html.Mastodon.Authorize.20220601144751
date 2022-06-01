@@ -54,7 +54,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         console.log(json)
         return json
     }
-    async function verify() {
+    async function verify(accessToken) {
         const domain = 'pawoo.net';
         const method = "GET";
         const headers = {
@@ -199,7 +199,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         const json = await token(localStorage.getItem('client_id'), localStorage.getItem('client_secret'), url.searchParams.get('code'))
         console.log(json)
         const accesssToken = json.access_token
-        const v = await verify()
+        const v = await verify(accessToken)
         console.log(v)
         const res = await toot(accesssToken)
         console.log(res)
