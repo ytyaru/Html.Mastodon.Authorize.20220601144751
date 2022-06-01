@@ -63,7 +63,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
           'Authorization': `Bearer ${accessToken}`,
         };
         console.log(method)
-        console.log(header)
+        console.log(headers)
         const res = await fetch(`https://${domain}/api/v1/apps/verify_credentials`, {method, headers}).catch((e)=>console.error(e));
         console.log(res)
         const json = await res.json()
@@ -82,7 +82,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
           'Authorization': `Bearer ${accessToken}`,
         };
         console.log(method)
-        console.log(header)
+        console.log(headers)
         console.log(obj)
         console.log(body)
         const res = await fetch(`https://${domain}/api/v1/statuses`, {method, headers, body}).catch((e)=>console.error(e));
