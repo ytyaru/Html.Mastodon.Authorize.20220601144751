@@ -22,6 +22,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         const json = await res.json()
         console.log(json)
         console.log(JSON.stringify(json))
+        return json
     }
     function authorize(client_id) {
         console.log('----- authorize -----')
@@ -51,6 +52,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         console.log(res)
         const json = await res.json()
         console.log(json)
+        return json
     }
     /*
     async function apps() {
