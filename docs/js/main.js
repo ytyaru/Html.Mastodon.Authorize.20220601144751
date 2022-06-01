@@ -54,6 +54,22 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         console.log(json)
         return json
     }
+    async function toot(accessToken) {
+        const domain = 'pawoo.net';
+        const obj = {status: "マストドンAPIのテストです。\nJavaScriptとユーザの手動により認証しました。"};
+        const method = "POST";
+        const body = JSON.stringify(obj);
+        const headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        };
+        const res = await fetch(`https://${domain}/api/v1/statuses`, {method, headers, body}).catch((e)=>console.error(e));
+        console.log(res)
+        const json = await res.json()
+        console.log(json)
+        return json
+    }
     /*
     async function apps() {
         const domain = 'pawoo.net';
@@ -141,16 +157,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     }
     */
     const url = new URL(location.href)
-    if (url.searchParams.has('code')) { // マストドンAPI oauth/authorize でリダイレクトされた場合
-        console.log('----- authorized -----')
-        // client_id, client_secretはLocalStorageに保存しておく必要がある
-        const json = await token(localStorage.getItem('client_id'), localStorage.getItem('client_secret'), url.searchParams.get('code'))
-        const token = json.access_token
-        const res = await toot(token)
-        console.log(res)
-        console.log('----- 以上 -----')
-    }
-    else {
+    if (!url.searchParams.has('code')) { // マストドンAPI oauth/authorize でリダイレクトされた場合
 //        const client_id = localStorage.getItem('client_id');
 //        const client_secret = localStorage.getItem('client_secret');
         const app = await apps()
@@ -159,7 +166,21 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         console.log(app)
         console.log(app.client_id)
         console.log(app.client_secret)
-        const auth = authorize(app.client_id)
+        console.log(localStorage.getItem('client_id'))
+        console.log(localStorage.getItem('client_secret'))
+        authorize(app.client_id)
+    }
+    else {
+        console.log('----- authorized -----')
+        console.log(localStorage.getItem('client_id'))
+        console.log(localStorage.getItem('client_secret'))
+        // client_id, client_secretはLocalStorageに保存しておく必要がある
+        const json = await token(localStorage.getItem('client_id'), localStorage.getItem('client_secret'), url.searchParams.get('code'))
+        console.log(json)
+        const accesssToken = json.access_token
+        const res = await toot(accesssToken)
+        console.log(res)
+        console.log('----- 以上 -----')
     }
 });
 window.addEventListener('beforeunload', (event) => {
