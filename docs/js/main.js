@@ -54,6 +54,23 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         console.log(json)
         return json
     }
+    async function verify() {
+        const domain = 'pawoo.net';
+        const method = "GET";
+        const headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        };
+        console.log(method)
+        console.log(header)
+        const res = await fetch(`https://${domain}/api/v1/apps/verify_credentials`, {method, headers}).catch((e)=>console.error(e));
+        console.log(res)
+        const json = await res.json()
+        console.log(json)
+        return json
+
+    }
     async function toot(accessToken) {
         const domain = 'pawoo.net';
         const obj = {status: "マストドンAPIのテストです。\nJavaScriptとユーザの手動により認証しました。"};
@@ -64,6 +81,10 @@ window.addEventListener('DOMContentLoaded', async (event) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`,
         };
+        console.log(method)
+        console.log(header)
+        console.log(obj)
+        console.log(body)
         const res = await fetch(`https://${domain}/api/v1/statuses`, {method, headers, body}).catch((e)=>console.error(e));
         console.log(res)
         const json = await res.json()
@@ -178,6 +199,8 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         const json = await token(localStorage.getItem('client_id'), localStorage.getItem('client_secret'), url.searchParams.get('code'))
         console.log(json)
         const accesssToken = json.access_token
+        const v = await verify()
+        console.log(v)
         const res = await toot(accesssToken)
         console.log(res)
         console.log('----- 以上 -----')
